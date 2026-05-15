@@ -4,6 +4,7 @@ from datetime import datetime
 from pathlib import Path
 import sys
 
+
 try:
     from airflow import DAG
     from airflow.operators.python import PythonOperator
@@ -16,16 +17,10 @@ if str(PROJECT_ROOT) not in sys.path:
 
 
 def validate_orders_task() -> dict:
-    """
-    TODO:
-    1. Import config values.
-    2. Read the input CSV.
-    3. Validate the rows.
-    4. Write the JSON summary.
-    5. Send the Discord alert.
-    6. Raise an error on failed validation.
-    """
-    raise NotImplementedError
+    from src.config import AIRFLOW_INPUT_FILE
+    from src.validation import validate_orders
+
+    return validate_orders(AIRFLOW_INPUT_FILE)
 
 
 if DAG is not None:
@@ -42,3 +37,4 @@ if DAG is not None:
         )
 else:  # pragma: no cover
     dag = None
+

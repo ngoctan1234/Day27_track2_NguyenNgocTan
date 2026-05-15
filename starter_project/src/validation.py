@@ -8,6 +8,7 @@ from urllib import request
 from src.config import DISCORD_WEBHOOK_URL, OUTPUT_DIR, VALID_STATUSES
 
 
+
 class LabValidationError(RuntimeError):
     pass
 
@@ -74,7 +75,10 @@ def send_discord_message(summary: dict[str, int | str], webhook_url: str = DISCO
     http_request = request.Request(
         webhook_url,
         data=payload,
-        headers={"Content-Type": "application/json"},
+        headers={
+            "Content-Type": "application/json",
+            "User-Agent": "Mozilla/5.0",
+        },
         method="POST",
     )
     with request.urlopen(http_request, timeout=15) as response:
@@ -99,3 +103,5 @@ def run_lab_check(
         raise LabValidationError(f"Validation failed. Summary saved to {output_file}")
 
     return summary
+def validate_orders(input_path: str | Path) -> dict[str, int | str]:
+    return run_lab_check(input_path)

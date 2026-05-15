@@ -1,3 +1,8 @@
+venv/
+.venv/
+env/
 __pycache__/
 *.pyc
-output/
+.env
+starter_project/.env
+starter_project/output/
